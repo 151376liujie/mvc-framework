@@ -1,4 +1,4 @@
-package com.java.framework.servlet;
+package org.framework.java.controller;
 
 import java.io.IOException;
 import java.text.DateFormat;

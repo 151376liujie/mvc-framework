@@ -8,10 +8,12 @@ public class BaseModel implements Serializable {
 
     protected long id;
 
-    @Override
-    public String toString() {
-	// TODO
-	return null;
+    public long getId() {
+	return id;
+    }
+
+    public void setId(long id) {
+	this.id = id;
     }
 
 }

@@ -14,30 +14,46 @@ public class TestDatabaseUtils {
     @Test
     public void testQueryEntityList() throws Exception {
 	String sql = "select * from customer";
-	List<Customer> list = DatabaseUtils.queryForList(Customer.class, sql, null);
+	List<Customer> list = DatabaseUtils.queryForList(Customer.class, sql,
+		null);
 	Assert.assertTrue(!list.isEmpty());
     }
 
     @Test
     public void testQueryEntity() throws SQLException {
 	String sql = " select * from customer where id=? ";
-	Customer entity = DatabaseUtils.queryForEntity(Customer.class, sql, new Object[] { 1 });
+	Customer entity = DatabaseUtils.queryForEntity(Customer.class, sql,
+		new Object[] { 1 });
 	Assert.assertNotNull(entity);
 	System.out.println(entity);
     }
 
-	@Test
-	public void testInsertEntity() throws SQLException {
-		/*
-		 * Customer customer = new Customer(); customer.setAddr("河南省固始县");
-		 * customer.setMobile("13520443610"); customer.setName("刘杰");
-		 */
-		Map<String, Object> fieldMap = new HashMap<>();
-		fieldMap.put("name", "刘杰");
-		fieldMap.put("addr", "河南省固始县");
-		fieldMap.put("mobile", "13520443610");
-		long row = DatabaseUtils.insertEntity(Customer.class, fieldMap);
-		System.out.println(row);
-	}
+    @Test
+    public void testInsertEntity() throws SQLException {
+	/*
+	 * Customer customer = new Customer(); customer.setAddr("河南省固始县");
+	 * customer.setMobile("13520443610"); customer.setName("刘杰");
+	 */
+	Map<String, Object> fieldMap = new HashMap<String, Object>();
+	fieldMap.put("name", "刘杰");
+	fieldMap.put("addr", "河南省固始县");
+	fieldMap.put("mobile", "13520443610");
+	long row = DatabaseUtils.insertEntity(Customer.class, fieldMap);
+	System.out.println(row);
+    }
+
+    @Test
+    public void testUpdateEntity() throws SQLException {
+	Map<String, Object> fieldMap = new HashMap<String, Object>();
+	fieldMap.put("name", "XXX");
+	long row = DatabaseUtils.updateEntity(Customer.class, 3, fieldMap);
+	System.out.println(row);
+    }
+
+    @Test
+    public void testDeleteEntity() throws SQLException {
+	long row = DatabaseUtils.deleteEntity(Customer.class, 3);
+	System.out.println(row);
+    }
 
 }

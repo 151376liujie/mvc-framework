@@ -28,7 +28,7 @@ public final class DatabaseUtils {
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(DatabaseUtils.class);
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
-    private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<>();
+	private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
 
     private static final String driverClass;
     private static final String url;

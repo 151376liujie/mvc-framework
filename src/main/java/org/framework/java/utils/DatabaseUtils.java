@@ -3,7 +3,6 @@ package org.framework.java.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -28,8 +29,8 @@ public final class DatabaseUtils {
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(DatabaseUtils.class);
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
-	private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
-
+    private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
+    private static BasicDataSource DATA_SOURCE = null;
     private static final String driverClass;
     private static final String url;
     private static final String userName;
@@ -47,6 +48,11 @@ public final class DatabaseUtils {
 	url = PropertiesUtils.getString(properties, KEY_JDBC_URL);
 	userName = PropertiesUtils.getString(properties, KEY_JDBC_USERNAME);
 	pass = PropertiesUtils.getString(properties, KEY_JDBC_PASSWORD);
+	try {
+	    DATA_SOURCE = BasicDataSourceFactory.createDataSource(properties);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -58,8 +64,7 @@ public final class DatabaseUtils {
 	try {
 	    Connection connection = CONNECTION_HOLDER.get();
 	    if (connection == null) {
-		Class.forName(driverClass);
-		connection = DriverManager.getConnection(url, userName, pass);
+		connection = DATA_SOURCE.getConnection();
 		CONNECTION_HOLDER.set(connection);
 		return connection;
 	    }

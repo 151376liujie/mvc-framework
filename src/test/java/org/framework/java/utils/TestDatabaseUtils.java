@@ -1,5 +1,6 @@
 package org.framework.java.utils;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +13,19 @@ import org.junit.Test;
 public class TestDatabaseUtils {
 
     @Test
+    public void testGetConnection() {
+	Connection connection = DatabaseUtils.getConnection();
+	Assert.assertNotNull(connection);
+	System.out.println(connection);
+    }
+
+    @Test
     public void testQueryEntityList() throws Exception {
 	String sql = "select * from customer";
 	List<Customer> list = DatabaseUtils.queryForList(Customer.class, sql,
 		null);
 	Assert.assertTrue(!list.isEmpty());
+	System.out.println(list);
     }
 
     @Test

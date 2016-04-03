@@ -33,4 +33,10 @@ public class Customer extends BaseModel {
 	this.addr = addr;
     }
 
+    @Override
+    public String toString() {
+	return "Customer [name=" + name + ", mobile=" + mobile + ", addr="
+		+ addr + "]";
+    }
+
 }

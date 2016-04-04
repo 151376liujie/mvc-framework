@@ -81,7 +81,7 @@ public final class ConfigUtils {
      */
     public static String getAppWebResourcePath() {
 	return PropertiesUtils.getString(PROPERTIES,
-		ConfigConstant.FRAMEWORK_WEB_RESOURCE_PATH);
+		ConfigConstant.FRAMEWORK_WEB_RESOURCE_PATH, "/assert/");
     }
 
 }

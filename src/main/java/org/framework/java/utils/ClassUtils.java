@@ -3,12 +3,18 @@ package org.framework.java.utils;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.apache.commons.lang3.StringUtils;
+import org.framework.java.annotation.Controller;
+import org.framework.java.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,12 +74,71 @@ public final class ClassUtils {
 		    System.out.println(path);
 		    addClass(classSet, path, basePackage);
 		} else if (url.getProtocol().equals("jar")) {
-
+		    JarURLConnection conn = (JarURLConnection) url
+			    .openConnection();
+		    if (conn != null) {
+			JarFile jarFile = conn.getJarFile();
+			Enumeration<JarEntry> entries = jarFile.entries();
+			while (entries.hasMoreElements()) {
+			    JarEntry jarEntry = entries.nextElement();
+			    String name = jarEntry.getName();
+			    if (name.endsWith(".class")) {
+				String className = name.substring(0,
+					name.lastIndexOf(".class"));
+				className = className.replaceAll("/", ".");
+				doAddClass(classSet, className);
+			    }
+			}
+		    }
 		}
 	    }
 	} catch (IOException e) {
 	    LOGGER.error(e.getMessage(), e);
 	}
+	return classSet;
+    }
+
+    /**
+     * 获取所有controller类
+     * 
+     * @return
+     */
+    public static Set<Class<?>> getControllerClassSet() {
+	return getClassSetByType(Controller.class);
+    }
+
+    /**
+     * 获取所有的service类
+     * 
+     * @return
+     */
+    public static Set<Class<?>> getServiceClassSet() {
+	return getClassSetByType(Service.class);
+    }
+
+    /**
+     * 根据指定类型获取类集合
+     * 
+     * @param clazz
+     * @return
+     */
+    public static Set<Class<?>> getClassSetByType(
+	    Class<? extends Annotation> clazz) {
+	Set<Class<?>> set = new HashSet<Class<?>>();
+	String basePackage = ConfigUtils.getAppBasePath();
+	Set<Class<?>> classSet = getClassSet(basePackage);
+	for (Class<?> cls : classSet) {
+	    if (cls.isAnnotationPresent(clazz)) {
+		set.add(cls);
+	    }
+	}
+	return set;
+    }
+
+    public static Set<Class<?>> getBeanClassSet() {
+	Set<Class<?>> classSet = new HashSet<Class<?>>();
+	classSet.addAll(getControllerClassSet());
+	classSet.addAll(getServiceClassSet());
 	return classSet;
     }
 

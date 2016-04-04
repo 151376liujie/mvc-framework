@@ -10,11 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.framework.java.HelloService;
 import org.framework.java.annotation.Controller;
+import org.framework.java.annotation.Inject;
 
 @Controller
 public class HelloServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    @Inject
+    private HelloService helloService;
+
+    public HelloService getHelloService() {
+	return helloService;
+    }
 
     public HelloServlet() {
 	super();

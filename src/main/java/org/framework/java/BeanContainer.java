@@ -31,6 +31,12 @@ public class BeanContainer {
 	return beanMap;
     }
 
+    /**
+     * 获取指定类型的bean实例
+     * 
+     * @param clazz
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz) {
 	return (T) beanMap.get(clazz);

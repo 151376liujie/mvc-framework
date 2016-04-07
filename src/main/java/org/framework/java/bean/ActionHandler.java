@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author liujie
  * 
  */
-public class ActionHander implements Serializable {
+public class ActionHandler implements Serializable {
 
     private static final long serialVersionUID = 4383310918010581376L;
 

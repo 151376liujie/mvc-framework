@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 控制反转攻击类
+ * 控制反转工具类
  * 
  * @author liujie
  * 

@@ -38,7 +38,17 @@ public final class ClassUtils {
     }
 
     /**
-     * 加载制定类
+     * 加载指定类
+     * 
+     * @param className
+     * @return
+     */
+    public static Class<?> loadClass(String className) {
+	return loadClass(className, false);
+    }
+
+    /**
+     * 加载指定类，并指定是否执行初始化代码块
      * 
      * @param className
      * @param isInitialed

@@ -18,6 +18,12 @@ public class Request implements Serializable {
     private String requestMethod;
     private String requestUrl;
 
+    public Request(String requestMethod, String requestUrl) {
+	super();
+	this.requestMethod = requestMethod;
+	this.requestUrl = requestUrl;
+    }
+
     public String getRequestMethod() {
 	return requestMethod;
     }

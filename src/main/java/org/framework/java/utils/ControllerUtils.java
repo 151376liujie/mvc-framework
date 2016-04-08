@@ -49,14 +49,15 @@ public final class ControllerUtils {
      * @param request
      * @return
      */
-    public static ActionHandler getActionHandler(Request request) {
+    public static ActionHandler getActionHandler(String requestUrl,
+	    String method) {
+	Request request = new Request(method, requestUrl);
 	return actionMap.get(request);
     }
 
     private static Request buildRequest(ActionMapping annotation) {
-	Request request = new Request();
-	request.setRequestMethod(annotation.method());
-	request.setRequestUrl(annotation.requestUrl());
+	Request request = new Request(annotation.method(),
+		annotation.requestUrl());
 	return request;
     }
 

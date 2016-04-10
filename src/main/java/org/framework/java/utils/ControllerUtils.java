@@ -8,8 +8,6 @@ import java.util.Set;
 import org.framework.java.annotation.ActionMapping;
 import org.framework.java.bean.ActionHandler;
 import org.framework.java.bean.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 控制器工具类
@@ -19,9 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class ControllerUtils {
 
-    private static final Logger LOGGER = LoggerFactory
-	    .getLogger(ControllerUtils.class);
-
+    // key-请求，value-处理器
     private static final Map<Request, ActionHandler> actionMap = new HashMap<Request, ActionHandler>();
     
     static {

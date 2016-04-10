@@ -5,9 +5,9 @@
   						http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.java.framework</groupId>
-  <artifactId>framework-demo</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>mini-framework</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1</version>
   <name>demo Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
@@ -79,12 +79,11 @@
   </dependencies>
   
   <build>
-  	<finalName>framework-demo</finalName>
   	<plugins>
   		<plugin>
   			<groupId>org.apache.maven.plugins</groupId>
   			<artifactId>maven-compiler-plugin</artifactId>
-  			<version>3.3</version>
+  			<version>3.0</version>
   			<configuration>
   				<source>1.6</source>
   				<target>1.6</target>

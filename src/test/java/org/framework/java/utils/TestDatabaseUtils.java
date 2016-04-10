@@ -8,18 +8,18 @@ import java.util.Map;
 
 import org.framework.java.model.Customer;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.Ignore;
 
 public class TestDatabaseUtils {
 
-    @Test
+    @Ignore
     public void testGetConnection() {
 	Connection connection = DatabaseUtils.getConnection();
 	Assert.assertNotNull(connection);
 	System.out.println(connection);
     }
 
-    @Test
+    @Ignore
     public void testQueryEntityList() throws Exception {
 	String sql = "select * from customer";
 	List<Customer> list = DatabaseUtils.queryForList(Customer.class, sql,
@@ -28,7 +28,7 @@ public class TestDatabaseUtils {
 	System.out.println(list);
     }
 
-    @Test
+    @Ignore
     public void testQueryEntity() throws SQLException {
 	String sql = " select * from customer where id=? ";
 	Customer entity = DatabaseUtils.queryForEntity(Customer.class, sql,
@@ -37,7 +37,7 @@ public class TestDatabaseUtils {
 	System.out.println(entity);
     }
 
-    @Test
+    @Ignore
     public void testInsertEntity() throws SQLException {
 	/*
 	 * Customer customer = new Customer(); customer.setAddr("河南省固始县");
@@ -51,7 +51,7 @@ public class TestDatabaseUtils {
 	System.out.println(row);
     }
 
-    @Test
+    @Ignore
     public void testUpdateEntity() throws SQLException {
 	Map<String, Object> fieldMap = new HashMap<String, Object>();
 	fieldMap.put("name", "XXX");
@@ -59,7 +59,7 @@ public class TestDatabaseUtils {
 	System.out.println(row);
     }
 
-    @Test
+    @Ignore
     public void testDeleteEntity() throws SQLException {
 	long row = DatabaseUtils.deleteEntity(Customer.class, 3);
 	System.out.println(row);

@@ -15,8 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ActionMapping {
 
-    public String value();
-
     // 请求方法
     public String method();
 

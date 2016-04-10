@@ -42,12 +42,27 @@ public class Request implements Serializable {
 
     @Override
     public int hashCode() {
-	return HashCodeBuilder.reflectionHashCode(this);
+	int reflectionHashCode = HashCodeBuilder.reflectionHashCode(this);
+	return reflectionHashCode;
     }
 
     @Override
     public boolean equals(Object obj) {
-	return EqualsBuilder.reflectionEquals(this, obj);
+	boolean reflectionEquals = EqualsBuilder.reflectionEquals(this, obj);
+	/*
+	 * if (obj == null || this == null) { return false; } if (obj.getClass()
+	 * != this.getClass()) { return false; } Request request = (Request)
+	 * obj; return
+	 * request.getRequestMethod().equals(this.getRequestMethod()) &&
+	 * request.getRequestUrl().equals(this.getRequestUrl());
+	 */
+	return reflectionEquals;
+    }
+
+    @Override
+    public String toString() {
+	return "Request [requestMethod=" + requestMethod + ", requestUrl="
+		+ requestUrl + "]";
     }
 
 }

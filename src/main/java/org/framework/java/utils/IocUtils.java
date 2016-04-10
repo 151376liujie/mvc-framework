@@ -23,7 +23,7 @@ public final class IocUtils {
     /**
      * 实现IOC控制反转
      */
-    public static void doInject() {
+    static {
 	Map<Class<?>, Object> beanMap = BeanContainer.getBeanMap();
 	for (Entry<Class<?>, Object> entry : beanMap.entrySet()) {
 	    Class<?> clazz = entry.getKey();

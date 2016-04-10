@@ -2,7 +2,11 @@ package org.framework.java.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.framework.java.bean.ActionHandler;
+import org.framework.java.bean.Request;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,6 +39,18 @@ public class TestReflectionUtils {
 	Field field = String.class.getDeclaredField("hash");
 	ReflectionUtils.setField(newInstance, field, 124556);
 	System.out.println(newInstance.hashCode());
+    }
+
+    @Test
+    public void testHashMap() {
+	Request request = new Request("get", "/hello");
+	Map<Request, ActionHandler> map = new HashMap<Request, ActionHandler>();
+	map.put(request, new ActionHandler());
+	System.out.println(map);
+
+	request = new Request("get", "/hello");
+	System.out.println(map.get(request));
+
     }
 
 }

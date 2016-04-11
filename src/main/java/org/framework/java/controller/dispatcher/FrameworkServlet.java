@@ -3,7 +3,10 @@ package org.framework.java.controller.dispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,11 +25,13 @@ import org.framework.java.BeanContainer;
 import org.framework.java.bean.ActionHandler;
 import org.framework.java.model.PageView;
 import org.framework.java.model.ResponseData;
+import org.framework.java.utils.CodecUtils;
 import org.framework.java.utils.ConfigUtils;
 import org.framework.java.utils.ControllerUtils;
 import org.framework.java.utils.FrameworkLoader;
 import org.framework.java.utils.JsonUtils;
 import org.framework.java.utils.ReflectionUtils;
+import org.framework.java.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +79,10 @@ public class FrameworkServlet extends HttpServlet {
     protected void service(HttpServletRequest request,
 	    HttpServletResponse response)
 	    throws ServletException, IOException {
+	request.setCharacterEncoding("UTF-8");
+	response.setCharacterEncoding("UTF-8");
 	String requestURl = request.getPathInfo();
+
 	String method = request.getMethod().toLowerCase();
 	LOGGER.info("request url :{},request method :{}..", requestURl, method);
 	ActionHandler actionHandler = ControllerUtils.getActionHandler(requestURl, method);
@@ -83,16 +91,37 @@ public class FrameworkServlet extends HttpServlet {
 	    Class<?> controllerClass = actionHandler.getControllerClass();
 	    Object controller = BeanContainer.getBean(controllerClass);
 	    Map<String, String[]> parameterMap = request.getParameterMap();
+	    Map<String, Object> map = new HashMap<String, Object>();
 	    List<Object> paramList = new ArrayList<Object>();
-	    for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-		String[] value = entry.getValue();
-		for (String parm : value) {
-		    paramList.add(parm);
+	    Enumeration<String> parameterNames = request.getParameterNames();
+	    while (parameterNames.hasMoreElements()) {
+		String parameterName = parameterNames.nextElement();
+		String parameterValue = request.getParameter(parameterName);
+		parameterValue = new String(
+			parameterValue.getBytes("ISO-8859-1"),
+			Charset.forName("utf-8"));
+		map.put(parameterName, parameterValue);
+		LOGGER.info("parameter name is :{}, parameter value is :{}...",
+			parameterName, parameterValue);
+		}
+	    String body = CodecUtils.decodeUrl(StreamUtils.getString(request
+		    .getInputStream()));
+	    if (StringUtils.isNotEmpty(body)) {
+		String[] split = StringUtils.split(body, "&");
+		if (split.length > 0) {
+		    for (String param : split) {
+			String[] arr = StringUtils.split(param, "=");
+			if (arr.length == 2) {
+			    String paramName = arr[0];
+			    String paramValue = arr[1];
+			    map.put(paramName, paramValue);
+			}
+		    }
 		}
 	    }
 	    try {
 		Object result = ReflectionUtils.invokeMethod(controller,
-			actionMethod, paramList.toArray());
+			actionMethod, map.values().toArray());
 		if (result instanceof PageView) {
 		    // 返回视图
 		    PageView view = (PageView) result;

@@ -1,4 +1,4 @@
-package org.framework.java.controller.dispatcher;
+package org.framework.java.web.dispatcher;
 
 import java.io.IOException;
 import java.io.PrintWriter;

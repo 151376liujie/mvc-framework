@@ -2,6 +2,7 @@ package org.framework.web.dispatcher;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
@@ -34,7 +35,6 @@ import org.framework.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * 核心拦截器，拦截所有请求
  */
@@ -43,8 +43,7 @@ public class FrameworkServlet extends HttpServlet {
 
     private static final long serialVersionUID = 5567022349711280068L;
 
-    private static final Logger LOGGER = LoggerFactory
-	    .getLogger(FrameworkServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrameworkServlet.class);
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -56,15 +55,13 @@ public class FrameworkServlet extends HttpServlet {
 	LOGGER.info(" load class finished.. ");
 	ServletContext servletContext = config.getServletContext();
 	// 注册处理jsp的servlet
-	ServletRegistration jspServlet = servletContext
-		.getServletRegistration("jsp");
+	ServletRegistration jspServlet = servletContext.getServletRegistration("jsp");
 
 	String appViewPath = ConfigUtils.getAppViewPath();
 	jspServlet.addMapping(appViewPath + "*");
 	LOGGER.info("registe jsp servlet to servlet context..");
 	// 注册默认的servlet
-	ServletRegistration defaultServlet = servletContext
-		.getServletRegistration("default");
+	ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
 
 	String appWebResourcePath = ConfigUtils.getAppWebResourcePath();
 	defaultServlet.addMapping(appWebResourcePath + "*");
@@ -72,9 +69,8 @@ public class FrameworkServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest request,
-	    HttpServletResponse response)
-	    throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	    IOException {
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	String requestURl = request.getPathInfo();
@@ -86,20 +82,9 @@ public class FrameworkServlet extends HttpServlet {
 	    Method actionMethod = actionHandler.getActionMethod();
 	    Class<?> controllerClass = actionHandler.getControllerClass();
 	    Object controller = BeanContainer.getBean(controllerClass);
-	    Map<String, Object> map = new HashMap<String, Object>();
-	    Enumeration<String> parameterNames = request.getParameterNames();
-	    while (parameterNames.hasMoreElements()) {
-		String parameterName = parameterNames.nextElement();
-		String parameterValue = request.getParameter(parameterName);
-		parameterValue = new String(
-			parameterValue.getBytes("ISO-8859-1"),
-			Charset.forName("utf-8"));
-		map.put(parameterName, parameterValue);
-		LOGGER.info("parameter name is :{}, parameter value is :{}...",
-			parameterName, parameterValue);
-		}
-	    String body = CodecUtils.decodeUrl(StreamUtils.getString(request
-		    .getInputStream()));
+	    // 获取请求参数
+	    Map<String, Object> map = getParameterMap(request);
+	    String body = CodecUtils.decodeUrl(StreamUtils.getString(request.getInputStream()));
 	    if (StringUtils.isNotEmpty(body)) {
 		String[] split = StringUtils.split(body, "&");
 		if (split.length > 0) {
@@ -115,8 +100,7 @@ public class FrameworkServlet extends HttpServlet {
 	    }
 	    try {
 		RequestParameter requestParameter = new RequestParameter(map);
-		Object result = ReflectionUtils.invokeMethod(controller,
-			actionMethod, requestParameter);
+		Object result = ReflectionUtils.invokeMethod(controller, actionMethod, requestParameter);
 		if (result instanceof PageView) {
 		    // 返回视图
 		    PageView view = (PageView) result;
@@ -124,16 +108,12 @@ public class FrameworkServlet extends HttpServlet {
 		    Map<String, Object> modelMap = view.getModelMap();
 		    if (StringUtils.isNotEmpty(path)) {
 			if (path.startsWith("/")) {
-			    response.sendRedirect(request.getContextPath()
-				    + path);
+			    response.sendRedirect(request.getContextPath() + path);
 			} else {
-			    for (Entry<String, Object> entry : modelMap
-				    .entrySet()) {
-				request.setAttribute(entry.getKey(),
-					entry.getValue());
+			    for (Entry<String, Object> entry : modelMap.entrySet()) {
+				request.setAttribute(entry.getKey(), entry.getValue());
 			    }
-			    request.getRequestDispatcher(
-				    ConfigUtils.getAppViewPath() + path)
+			    request.getRequestDispatcher(ConfigUtils.getAppViewPath() + path)
 				    .forward(request, response);
 			}
 		    }
@@ -154,6 +134,32 @@ public class FrameworkServlet extends HttpServlet {
 		LOGGER.error(e.getMessage(), e);
 	    }
 	}
+    }
+
+    private Map<String, Object> getParameterMap(HttpServletRequest request) throws UnsupportedEncodingException {
+	Map<String, Object> map = new HashMap<String, Object>();
+	Enumeration<String> parameterNames = request.getParameterNames();
+	while (parameterNames.hasMoreElements()) {
+	    String parameterName = parameterNames.nextElement();
+	    String[] parameterValues = request.getParameterValues(parameterName);
+	    if (parameterValues != null && parameterValues.length > 0) {
+		if (parameterValues.length == 1) {
+		    String paramVal = new String(parameterValues[0].getBytes(Charset.forName("ISO-8859-1")),
+			    Charset.forName("utf-8"));
+		    map.put(parameterName, paramVal);
+		} else {
+		    StringBuilder sb = new StringBuilder();
+		    for (String pVal : parameterValues) {
+			String paramVal = new String(pVal.getBytes(Charset.forName("ISO-8859-1")),
+				Charset.forName("utf-8"));
+			sb.append(paramVal).append("@");
+		    }
+		    sb.deleteCharAt(sb.length() - 1);
+		    map.put(parameterName, sb.toString());
+		}
+	    }
+	}
+	return map;
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.framework.java.utils;
 
 import java.util.Properties;
 
+import org.framework.utils.PropertiesUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

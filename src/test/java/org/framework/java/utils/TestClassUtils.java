@@ -2,6 +2,7 @@ package org.framework.java.utils;
 
 import java.util.Set;
 
+import org.framework.utils.ClassUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;

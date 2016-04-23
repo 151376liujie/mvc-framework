@@ -5,8 +5,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.framework.java.bean.ActionHandler;
-import org.framework.java.bean.Request;
+import org.framework.bean.ActionHandler;
+import org.framework.bean.Request;
+import org.framework.utils.ReflectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

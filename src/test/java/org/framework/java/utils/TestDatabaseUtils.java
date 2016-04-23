@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.framework.java.model.Customer;
+import org.framework.model.Customer;
+import org.framework.utils.DatabaseUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 

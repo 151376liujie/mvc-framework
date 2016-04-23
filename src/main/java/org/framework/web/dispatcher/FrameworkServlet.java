@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.framework.BeanContainer;
 import org.framework.bean.ActionHandler;
 import org.framework.model.PageView;
+import org.framework.model.RequestParameter;
 import org.framework.model.ResponseData;
 import org.framework.utils.CodecUtils;
 import org.framework.utils.ConfigUtils;
@@ -87,9 +86,7 @@ public class FrameworkServlet extends HttpServlet {
 	    Method actionMethod = actionHandler.getActionMethod();
 	    Class<?> controllerClass = actionHandler.getControllerClass();
 	    Object controller = BeanContainer.getBean(controllerClass);
-	    Map<String, String[]> parameterMap = request.getParameterMap();
 	    Map<String, Object> map = new HashMap<String, Object>();
-	    List<Object> paramList = new ArrayList<Object>();
 	    Enumeration<String> parameterNames = request.getParameterNames();
 	    while (parameterNames.hasMoreElements()) {
 		String parameterName = parameterNames.nextElement();
@@ -117,8 +114,9 @@ public class FrameworkServlet extends HttpServlet {
 		}
 	    }
 	    try {
+		RequestParameter requestParameter = new RequestParameter(map);
 		Object result = ReflectionUtils.invokeMethod(controller,
-			actionMethod, map.values().toArray());
+			actionMethod, requestParameter);
 		if (result instanceof PageView) {
 		    // 返回视图
 		    PageView view = (PageView) result;

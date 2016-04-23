@@ -10,12 +10,12 @@ public class ResponseData {
 
     private Object model;
 
-    public Object getModel() {
-	return model;
+    public ResponseData(Object model) {
+	this.model = model;
     }
 
-    public void setModel(Object model) {
-	this.model = model;
+    public Object getModel() {
+	return model;
     }
 
 }

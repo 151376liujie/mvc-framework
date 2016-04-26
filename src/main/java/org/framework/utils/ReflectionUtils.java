@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * 反射攻击类
+ * 反射工具类
  *
  * @author liujie
  */

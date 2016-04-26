@@ -7,9 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * 请求动作映射
- * 
+ *
  * @author liujie
- * 
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

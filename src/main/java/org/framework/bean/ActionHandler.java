@@ -5,9 +5,8 @@ import java.lang.reflect.Method;
 
 /**
  * 封装请求处理器
- * 
+ *
  * @author liujie
- * 
  */
 public class ActionHandler implements Serializable {
 
@@ -17,19 +16,19 @@ public class ActionHandler implements Serializable {
     private Method actionMethod;
 
     public Class<?> getControllerClass() {
-	return controllerClass;
+        return controllerClass;
     }
 
     public void setControllerClass(Class<?> controllerClass) {
-	this.controllerClass = controllerClass;
+        this.controllerClass = controllerClass;
     }
 
     public Method getActionMethod() {
-	return actionMethod;
+        return actionMethod;
     }
 
     public void setActionMethod(Method actionMethod) {
-	this.actionMethod = actionMethod;
+        this.actionMethod = actionMethod;
     }
 
 }

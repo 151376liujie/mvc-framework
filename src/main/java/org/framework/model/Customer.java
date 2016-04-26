@@ -10,33 +10,33 @@ public class Customer extends BaseModel {
     private String addr;
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getMobile() {
-	return mobile;
+        return mobile;
     }
 
     public void setMobile(String mobile) {
-	this.mobile = mobile;
+        this.mobile = mobile;
     }
 
     public String getAddr() {
-	return addr;
+        return addr;
     }
 
     public void setAddr(String addr) {
-	this.addr = addr;
+        this.addr = addr;
     }
 
     @Override
     public String toString() {
-	return "Customer [name=" + name + ", mobile=" + mobile + ", addr="
-		+ addr + "]";
+        return "Customer [name=" + name + ", mobile=" + mobile + ", addr="
+                + addr + "]";
     }
 
 }

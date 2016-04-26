@@ -1,15 +1,14 @@
 package org.framework.bean;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * 对请求方式和请求路径的封装
- * 
+ *
  * @author liujie
- * 
  */
 public class Request implements Serializable {
 
@@ -19,50 +18,50 @@ public class Request implements Serializable {
     private String requestUrl;
 
     public Request(String requestMethod, String requestUrl) {
-	super();
-	this.requestMethod = requestMethod;
-	this.requestUrl = requestUrl;
+        super();
+        this.requestMethod = requestMethod;
+        this.requestUrl = requestUrl;
     }
 
     public String getRequestMethod() {
-	return requestMethod;
+        return requestMethod;
     }
 
     public void setRequestMethod(String requestMethod) {
-	this.requestMethod = requestMethod;
+        this.requestMethod = requestMethod;
     }
 
     public String getRequestUrl() {
-	return requestUrl;
+        return requestUrl;
     }
 
     public void setRequestUrl(String requestUrl) {
-	this.requestUrl = requestUrl;
+        this.requestUrl = requestUrl;
     }
 
     @Override
     public int hashCode() {
-	int reflectionHashCode = HashCodeBuilder.reflectionHashCode(this);
-	return reflectionHashCode;
+        int reflectionHashCode = HashCodeBuilder.reflectionHashCode(this);
+        return reflectionHashCode;
     }
 
     @Override
     public boolean equals(Object obj) {
-	boolean reflectionEquals = EqualsBuilder.reflectionEquals(this, obj);
-	/*
-	 * if (obj == null || this == null) { return false; } if (obj.getClass()
+        boolean reflectionEquals = EqualsBuilder.reflectionEquals(this, obj);
+    /*
+     * if (obj == null || this == null) { return false; } if (obj.getClass()
 	 * != this.getClass()) { return false; } Request request = (Request)
 	 * obj; return
 	 * request.getRequestMethod().equals(this.getRequestMethod()) &&
 	 * request.getRequestUrl().equals(this.getRequestUrl());
 	 */
-	return reflectionEquals;
+        return reflectionEquals;
     }
 
     @Override
     public String toString() {
-	return "Request [requestMethod=" + requestMethod + ", requestUrl="
-		+ requestUrl + "]";
+        return "Request [requestMethod=" + requestMethod + ", requestUrl="
+                + requestUrl + "]";
     }
 
 }

@@ -7,9 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * 注入注解
- * 
+ *
  * @author liujie
- * 
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

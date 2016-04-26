@@ -5,9 +5,8 @@ import java.util.Map;
 
 /**
  * 视图对象的封装
- * 
+ *
  * @author liujie
- * 
  */
 public class PageView {
 
@@ -15,19 +14,19 @@ public class PageView {
     private Map<String, Object> modelMap = new HashMap<String, Object>();
 
     public PageView(String location) {
-	this.location = location;
+        this.location = location;
     }
 
     public PageView addModel(String key, Object value) {
-	modelMap.put(key, value);
-	return this;
+        modelMap.put(key, value);
+        return this;
     }
 
     public String getLocation() {
-	return location;
+        return location;
     }
 
     public Map<String, Object> getModelMap() {
-	return modelMap;
+        return modelMap;
     }
 }

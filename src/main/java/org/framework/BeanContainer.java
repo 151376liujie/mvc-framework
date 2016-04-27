@@ -21,7 +21,7 @@ public class BeanContainer {
         for (Class<?> clazz : beanClassSet) {
             Object instance = ReflectionUtils.newInstance(clazz);
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("class {} has added to bean container...", clazz);
+                LOGGER.info("class {} has added to bean container...", clazz.getName());
             }
             beanMap.put(clazz, instance);
         }

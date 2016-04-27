@@ -65,13 +65,15 @@ public class ProxyChain {
         return methodParams;
     }
 
-    public void doProxyChain() {
+    public Object doProxyChain() throws Throwable {
+        Object invokeResult;
         if (index < proxyList.size()) {
             Proxy proxy = proxyList.get(index++);
-            proxy.doProxy(this);
+            invokeResult = proxy.doProxy(this);
         } else {
-
+            invokeResult = methodProxy.invokeSuper(targetObject, methodParams);
         }
+        return invokeResult;
     }
 
 }

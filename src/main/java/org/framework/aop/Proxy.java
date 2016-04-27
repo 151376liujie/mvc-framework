@@ -11,6 +11,6 @@ public interface Proxy {
      *
      * @param proxyChain
      */
-    public void doProxy(ProxyChain proxyChain);
+    public Object doProxy(ProxyChain proxyChain);
 
 }

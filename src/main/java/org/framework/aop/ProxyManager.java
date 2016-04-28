@@ -25,7 +25,7 @@ public class ProxyManager {
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override
             public Object intercept(Object target, Method method, Object[] methodParams, MethodProxy methodProxy) throws Throwable {
-                return new ProxyChain(proxyList, targetClass, target, method, methodProxy, methodParams);
+                return new ProxyChain(proxyList, targetClass, target, method, methodProxy, methodParams).doProxyChain();
             }
         });
     }

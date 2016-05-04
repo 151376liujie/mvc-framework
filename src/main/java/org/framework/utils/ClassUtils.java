@@ -3,6 +3,7 @@ package org.framework.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.framework.annotation.Controller;
 import org.framework.annotation.Service;
+import org.framework.aop.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +124,16 @@ public final class ClassUtils {
      */
     public static Set<Class<?>> getServiceClassSet() {
         return getClassSetByType(Service.class);
+    }
+
+
+    /**
+     * 获取所有的切面类
+     *
+     * @return
+     */
+    public static Set<Class<?>> getAspectClassSet() {
+        return getClassSetByType(Aspect.class);
     }
 
     /**

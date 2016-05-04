@@ -14,7 +14,7 @@ public class ProxyChain {
     /**
      * 目标类
      */
-    private Class targetClass;
+    private Class<?> targetClass;
     /**
      * 目标对象
      */
@@ -36,7 +36,7 @@ public class ProxyChain {
 
     private int index = 0;
 
-    public ProxyChain(List<Proxy> proxyList, Class targetClass, Object targetObject, Method targetMethod, MethodProxy methodProxy, Object[] methodParams) {
+    public ProxyChain(List<Proxy> proxyList, Class<?> targetClass, Object targetObject, Method targetMethod, MethodProxy methodProxy, Object[] methodParams) {
         this.proxyList = proxyList;
         this.targetClass = targetClass;
         this.targetObject = targetObject;
@@ -71,7 +71,7 @@ public class ProxyChain {
             Proxy proxy = proxyList.get(index++);
             invokeResult = proxy.doProxy(this);
         } else {
-            invokeResult = methodProxy.invokeSuper(targetObject, methodParams);
+            invokeResult = getMethodProxy().invokeSuper(targetObject, methodParams);
         }
         return invokeResult;
     }

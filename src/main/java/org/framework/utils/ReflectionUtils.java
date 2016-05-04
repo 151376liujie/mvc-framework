@@ -44,9 +44,10 @@ public final class ReflectionUtils {
         try {
             method.setAccessible(true);
             Object result = method.invoke(instance, parameters);
+            System.out.println("~~~~~~" + result);
             return result;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            //LOGGER.error(e.getMessage(), e);
             return null;
         }
     }

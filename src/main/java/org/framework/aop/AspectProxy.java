@@ -1,10 +1,10 @@
 package org.framework.aop;
 
+import java.lang.reflect.Method;
+
 import org.framework.utils.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Method;
 
 /**
  * 切面模板方法
@@ -16,7 +16,7 @@ public abstract class AspectProxy implements Proxy {
 
     @Override
     public final Object doProxy(ProxyChain proxyChain) {
-        Class targetClass = proxyChain.getTargetClass();
+		Class<?> targetClass = proxyChain.getTargetClass();
         Object targetObject = proxyChain.getTargetObject();
         Method targetMethod = proxyChain.getTargetMethod();
         Object[] methodParams = proxyChain.getMethodParams();
@@ -45,7 +45,8 @@ public abstract class AspectProxy implements Proxy {
      * @param targetMethod
      * @param methodParams
      */
-    protected void end(Class targetClass, Object targetObject, Method targetMethod, Object[] methodParams) {
+	protected void end(Class<?> targetClass, Object targetObject,
+			Method targetMethod, Object[] methodParams) {
     }
 
     /**
@@ -57,7 +58,8 @@ public abstract class AspectProxy implements Proxy {
      * @param methodParams
      * @param e
      */
-    protected void error(Class targetClass, Object targetObject, Method targetMethod, Object[] methodParams, Exception e) {
+	protected void error(Class<?> targetClass, Object targetObject,
+			Method targetMethod, Object[] methodParams, Exception e) {
     }
 
     /**
@@ -68,7 +70,8 @@ public abstract class AspectProxy implements Proxy {
      * @param targetMethod
      * @param methodParams
      */
-    protected void before(Class targetClass, Object targetObject, Method targetMethod, Object[] methodParams) {
+	protected void before(Class<?> targetClass, Object targetObject,
+			Method targetMethod, Object[] methodParams) {
 
     }
 
@@ -81,7 +84,8 @@ public abstract class AspectProxy implements Proxy {
      * @param methodParams
      * @param result
      */
-    protected void after(Class targetClass, Object targetObject, Method targetMethod, Object[] methodParams, Object result) {
+	protected void after(Class<?> targetClass, Object targetObject,
+			Method targetMethod, Object[] methodParams, Object result) {
 
     }
 
@@ -93,7 +97,8 @@ public abstract class AspectProxy implements Proxy {
      * @param targetMethod
      * @return
      */
-    protected boolean intercept(Class targetClass, Object targetObject, Method targetMethod) {
+	protected boolean intercept(Class<?> targetClass, Object targetObject,
+			Method targetMethod) {
 
         return true;
     }

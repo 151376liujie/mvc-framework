@@ -29,7 +29,6 @@ public final class DatabaseUtils {
             .getLogger(DatabaseUtils.class);
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
     private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
-    private static BasicDataSource DATA_SOURCE = null;
     private static final String driverClass;
     private static final String url;
     private static final String userName;
@@ -39,6 +38,7 @@ public final class DatabaseUtils {
     private static final String KEY_JDBC_URL = "jdbc.url";
     private static final String KEY_JDBC_USERNAME = "jdbc.username";
     private static final String KEY_JDBC_PASSWORD = "jdbc.password";
+    private static BasicDataSource DATA_SOURCE = null;
 
     static {
         Properties properties = PropertiesUtils
@@ -75,8 +75,6 @@ public final class DatabaseUtils {
 
     /**
      * 关闭链接
-     *
-     * @param connection
      */
     public static void closeConnection() {
         Connection connection = CONNECTION_HOLDER.get();
@@ -94,7 +92,6 @@ public final class DatabaseUtils {
     /**
      * 执行update语句，返回受影响行数
      *
-     * @param connection
      * @param sql
      * @param params
      * @return

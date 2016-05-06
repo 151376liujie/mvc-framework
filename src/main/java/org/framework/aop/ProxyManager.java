@@ -21,7 +21,7 @@ public class ProxyManager {
      * @param <T>
      * @return
      */
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T getProxy(final Class<T> targetClass,
                                  final List<Proxy> proxyList) {
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {

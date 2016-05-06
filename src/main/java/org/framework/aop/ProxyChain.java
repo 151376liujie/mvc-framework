@@ -1,16 +1,17 @@
 package org.framework.aop;
 
+import net.sf.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * 代理链
  * Created by liujie on 2016/4/26 23:49.
  */
 public class ProxyChain {
+    private static int index = 0;
     /**
      * 目标类
      */
@@ -31,10 +32,7 @@ public class ProxyChain {
      * 方法参数
      */
     private Object[] methodParams;
-
     private List<Proxy> proxyList = new ArrayList<>();
-
-	private static int index = 0;
 
     public ProxyChain(List<Proxy> proxyList, Class<?> targetClass, Object targetObject, Method targetMethod, MethodProxy methodProxy, Object[] methodParams) {
         this.proxyList = proxyList;
@@ -45,7 +43,7 @@ public class ProxyChain {
         this.methodParams = methodParams;
     }
 
-	public Class<?> getTargetClass() {
+    public Class<?> getTargetClass() {
         return targetClass;
     }
 

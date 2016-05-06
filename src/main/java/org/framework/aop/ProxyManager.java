@@ -1,11 +1,11 @@
 package org.framework.aop;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 代理管理器，负责生成代理类
@@ -22,8 +22,8 @@ public class ProxyManager {
      * @return
      */
 	@SuppressWarnings("unchecked")
-	public <T> T getProxy(final Class<T> targetClass,
-			final List<Proxy> proxyList) {
+    public static <T> T getProxy(final Class<T> targetClass,
+                                 final List<Proxy> proxyList) {
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override
             public Object intercept(Object target, Method method, Object[] methodParams, MethodProxy methodProxy) throws Throwable {

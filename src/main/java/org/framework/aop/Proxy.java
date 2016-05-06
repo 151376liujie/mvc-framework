@@ -11,6 +11,6 @@ public interface Proxy {
      *
      * @param proxyChain
      */
-    public Object doProxy(ProxyChain proxyChain);
+    Object doProxy(ProxyChain proxyChain) throws Throwable;
 
 }

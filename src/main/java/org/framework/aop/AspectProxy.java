@@ -1,13 +1,13 @@
 package org.framework.aop;
 
-import java.lang.reflect.Method;
-
 import org.framework.utils.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
+
 /**
- * 切面模板方法
+ * 切面模板方法,子类继承该类可以实现方法拦截通知、前置通知、后置通知、方法执行后后置通知、抛出异常通知
  * Created by LiuJie on 2016/4/28 10:55.
  */
 public abstract class AspectProxy implements Proxy {

@@ -38,7 +38,7 @@ public final class ClassUtils {
     }
 
     /**
-     * 加载指定类
+     * 加载指定类,默认不执行静态代码块
      *
      * @param className
      * @return
@@ -57,7 +57,7 @@ public final class ClassUtils {
     public static Class<?> loadClass(String className, boolean isInitialed) {
         Class<?> cls = null;
         try {
-            cls = (Class<?>) Class.forName(className, isInitialed,
+            cls = Class.forName(className, isInitialed,
                     getClassLoader());
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
@@ -73,7 +73,7 @@ public final class ClassUtils {
      * @return
      */
     public static Set<Class<?>> getClassSet(String basePackage) {
-        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        Set<Class<?>> classSet = new HashSet<>();
         String baseUrl = basePackage.replace(".", "/");
         try {
             Enumeration<URL> urls = getClassLoader().getResources(baseUrl);
@@ -81,7 +81,6 @@ public final class ClassUtils {
                 URL url = urls.nextElement();
                 if (url.getProtocol().equals("file")) {
                     String path = url.getPath();
-                    System.out.println(path);
                     addClass(classSet, path, basePackage);
                 } else if (url.getProtocol().equals("jar")) {
                     JarURLConnection conn = (JarURLConnection) url
@@ -114,7 +113,7 @@ public final class ClassUtils {
      * @return
      */
     public static Set<Class<?>> getControllerClassSet() {
-        return getClassSetByType(Controller.class);
+        return getClassSetByAnnotation(Controller.class);
     }
 
     /**
@@ -123,38 +122,43 @@ public final class ClassUtils {
      * @return
      */
     public static Set<Class<?>> getServiceClassSet() {
-        return getClassSetByType(Service.class);
+        return getClassSetByAnnotation(Service.class);
     }
 
 
     /**
-     * 获取所有的切面类
+     * 获取所有的切面类(AspectProxy子类并且带有Aspect注解)
      *
      * @return
      */
     public static Set<Class<?>> getAspectClassSet() {
-        return getClassSetByType(Aspect.class);
+        return getClassSetByAnnotation(Aspect.class);
     }
 
     /**
-     * 根据指定类型获取类集合
+     * 获取指定标记下的所有class集合
      *
-     * @param clazz
+     * @param annotationClazz
      * @return
      */
-    public static Set<Class<?>> getClassSetByType(
-            Class<? extends Annotation> clazz) {
-        Set<Class<?>> set = new HashSet<Class<?>>();
+    public static Set<Class<?>> getClassSetByAnnotation(
+            Class<? extends Annotation> annotationClazz) {
+        Set<Class<?>> set = new HashSet<>();
         String basePackage = ConfigUtils.getAppBasePath();
         Set<Class<?>> classSet = getClassSet(basePackage);
         for (Class<?> cls : classSet) {
-            if (cls.isAnnotationPresent(clazz)) {
+            if (cls.isAnnotationPresent(annotationClazz)) {
                 set.add(cls);
             }
         }
         return set;
     }
 
+    /**
+     * 我们认为所有的controller和所有的service类为bean
+     *
+     * @return
+     */
     public static Set<Class<?>> getBeanClassSet() {
         Set<Class<?>> classSet = new HashSet<Class<?>>();
         classSet.addAll(getControllerClassSet());
@@ -198,5 +202,24 @@ public final class ClassUtils {
         Class<?> classForLoad = loadClass(classPath.replace("/", "."), false);
         classSet.add(classForLoad);
     }
+
+    /**
+     * 获取父类或接口下所有的子类或实现类
+     *
+     * @param superClazz
+     * @return
+     */
+    public static Set<Class<?>> getClassSetBySuperClass(Class<?> superClazz) {
+        Set<Class<?>> classes = new HashSet<>();
+        String basePackage = ConfigUtils.getAppBasePath();
+        Set<Class<?>> classSet = getClassSet(basePackage);
+        for (Class<?> clazz : classSet) {
+            if (!clazz.equals(superClazz) && superClazz.isAssignableFrom(clazz)) {
+                classes.add(clazz);
+            }
+        }
+        return classes;
+    }
+
 
 }

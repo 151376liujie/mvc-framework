@@ -14,7 +14,7 @@ public class BeanContainer {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(BeanContainer.class);
 
-    private static final Map<Class<?>, Object> beanMap = new HashMap<Class<?>, Object>();
+    private static final Map<Class<?>, Object> beanMap = new HashMap<>();
 
     static {
         Set<Class<?>> beanClassSet = ClassUtils.getBeanClassSet();

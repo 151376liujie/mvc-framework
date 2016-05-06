@@ -21,29 +21,24 @@ public class AopClient {
         FrameworkLoader.init();
         Set<Class<?>> aspectClassSet = ClassUtils.getAspectClassSet();
         System.out.println(aspectClassSet);
-        List<Proxy> proxyList = new ArrayList<Proxy>();
+        List<Proxy> proxyList = new ArrayList<>();
         ProxyManager manager = new ProxyManager();
         for (Class<?> clazz : aspectClassSet) {
             try {
                 Proxy instance = (Proxy) clazz.newInstance();
                 proxyList.add(instance);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (clazz.isAnnotationPresent(Aspect.class)) {
                 Aspect annotation = clazz.getAnnotation(Aspect.class);
                 Class<? extends Annotation> ann = annotation.value();
-                Set<Class<?>> serviceBeanClassSet = ClassUtils.getClassSetByType(ann);
+                Set<Class<?>> serviceBeanClassSet = ClassUtils.getClassSetByAnnotation(ann);
                 for (Class<?> clz : serviceBeanClassSet) {
-
                     HelloService service = (HelloService) manager.getProxy(clz, proxyList);
                     service.sayHi("world");
                 }
             }
         }
-
     }
-
 }

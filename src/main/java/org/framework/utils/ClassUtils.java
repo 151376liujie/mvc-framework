@@ -166,6 +166,24 @@ public final class ClassUtils {
         return classSet;
     }
 
+    /**
+     * 获取父类或接口下所有的子类或实现类
+     *
+     * @param superClazz
+     * @return
+     */
+    public static Set<Class<?>> getClassSetBySuperClass(Class<?> superClazz) {
+        Set<Class<?>> classes = new HashSet<>();
+        String basePackage = ConfigUtils.getAppBasePath();
+        Set<Class<?>> classSet = getClassSet(basePackage);
+        for (Class<?> clazz : classSet) {
+            if (!clazz.equals(superClazz) && superClazz.isAssignableFrom(clazz)) {
+                classes.add(clazz);
+            }
+        }
+        return classes;
+    }
+
     private static void addClass(Set<Class<?>> classSet, String packagePath,
                                  String packageName) {
         File[] files = new File(packagePath).listFiles(new FileFilter() {
@@ -202,24 +220,5 @@ public final class ClassUtils {
         Class<?> classForLoad = loadClass(classPath.replace("/", "."), false);
         classSet.add(classForLoad);
     }
-
-    /**
-     * 获取父类或接口下所有的子类或实现类
-     *
-     * @param superClazz
-     * @return
-     */
-    public static Set<Class<?>> getClassSetBySuperClass(Class<?> superClazz) {
-        Set<Class<?>> classes = new HashSet<>();
-        String basePackage = ConfigUtils.getAppBasePath();
-        Set<Class<?>> classSet = getClassSet(basePackage);
-        for (Class<?> clazz : classSet) {
-            if (!clazz.equals(superClazz) && superClazz.isAssignableFrom(clazz)) {
-                classes.add(clazz);
-            }
-        }
-        return classes;
-    }
-
 
 }

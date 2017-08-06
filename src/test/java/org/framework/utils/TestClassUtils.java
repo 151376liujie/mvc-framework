@@ -20,7 +20,7 @@ public class TestClassUtils {
      */
     @Test
     public void testGetClassLoader() {
-        LOGGER.info(ClassUtils.getClassLoader().toString());
+        this.LOGGER.info(ClassUtils.getClassLoader().toString());
     }
 
     /**
@@ -28,7 +28,7 @@ public class TestClassUtils {
      */
     @Test
     public void testLoadClass() {
-        LOGGER.info(ClassUtils.loadClass("java.lang.String", true).toString());
+        this.LOGGER.info(ClassUtils.loadClass("java.lang.String", true).toString());
     }
 
     /**
@@ -42,7 +42,7 @@ public class TestClassUtils {
         Set<Class<?>> classSet = ClassUtils.getClassSet(appBasePath);
         Assert.assertTrue(classSet != null);
         Assert.assertFalse(classSet.isEmpty());
-        LOGGER.info(classSet.toString());
+        this.LOGGER.info(classSet.toString());
     }
 
     /**
@@ -53,7 +53,7 @@ public class TestClassUtils {
         Set<Class<?>> controllerClassSet = ClassUtils.getControllerClassSet();
         Assert.assertTrue(controllerClassSet != null);
         Assert.assertFalse(controllerClassSet.isEmpty());
-        LOGGER.info(Arrays.toString(controllerClassSet.toArray()));
+        this.LOGGER.info(Arrays.toString(controllerClassSet.toArray()));
     }
 
     /**
@@ -64,7 +64,7 @@ public class TestClassUtils {
         Set<Class<?>> serviceClassSet = ClassUtils.getServiceClassSet();
         Assert.assertTrue(serviceClassSet != null);
         Assert.assertFalse(serviceClassSet.isEmpty());
-        LOGGER.info(Arrays.toString(serviceClassSet.toArray()));
+        this.LOGGER.info(Arrays.toString(serviceClassSet.toArray()));
     }
 
     /**
@@ -93,7 +93,7 @@ public class TestClassUtils {
         Set<Class<?>> aspectClassSet = ClassUtils.getAspectClassSet();
         Assert.assertTrue(aspectClassSet != null);
         Assert.assertFalse(aspectClassSet.isEmpty());
-        LOGGER.info(Arrays.toString(aspectClassSet.toArray()));
+        this.LOGGER.info(Arrays.toString(aspectClassSet.toArray()));
     }
 
     /**
@@ -104,7 +104,7 @@ public class TestClassUtils {
         Set<Class<?>> classSet = ClassUtils.getClassSetByAnnotation(Controller.class);
         Assert.assertFalse(classSet == null);
         Assert.assertFalse(classSet.isEmpty());
-        LOGGER.info(Arrays.toString(classSet.toArray()));
+        this.LOGGER.info(Arrays.toString(classSet.toArray()));
     }
 
     /**
@@ -115,7 +115,7 @@ public class TestClassUtils {
         Set<Class<?>> classSet = ClassUtils.getClassSetBySuperClass(Proxy.class);
         Assert.assertFalse(classSet == null);
         Assert.assertFalse(classSet.isEmpty());
-        LOGGER.info(Arrays.toString(classSet.toArray()));
+        this.LOGGER.info(Arrays.toString(classSet.toArray()));
     }
 
 }

@@ -40,10 +40,7 @@ public final class IocUtils {
                         Object value = beanMap.get(type);
                         ReflectionUtils.setField(instance, field, value);
                     } else {
-                        LOGGER.error("filed to inject filed {}",
-                                field.getName());
-                        throw new RuntimeException("filed to inject filed "
-                                + field.getName());
+                        LOGGER.error("failed to inject filed: {}, no type: {} found in the bean container.", field.getName(), type.getName());
                     }
                 }
             }

@@ -32,11 +32,14 @@ public class TestClassUtils {
     }
 
     /**
-     * 测试加载包下所有类
+     * 测试加载框架基本包下所有类
      */
     @Test
     public void testGetClassSet() {
-        Set<Class<?>> classSet = ClassUtils.getClassSet("org.framework");
+        String appBasePath = ConfigUtils.getAppBasePath();
+        Assert.assertNotNull(appBasePath);
+        Assert.assertEquals("org.framework", appBasePath);
+        Set<Class<?>> classSet = ClassUtils.getClassSet(appBasePath);
         Assert.assertTrue(classSet != null);
         Assert.assertFalse(classSet.isEmpty());
         LOGGER.info(classSet.toString());

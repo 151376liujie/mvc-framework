@@ -10,6 +10,7 @@ public interface ConfigConstant {
      * 配置文件的文件名
      */
     String CONFIG_FILE = "mini-framework.properties";
+
     String JDBC_DRIVER = "mini.framework.jdbc.driver";
     String JDBC_URL = "mini.framework.jdbc.url";
     String JDBC_USERNAME = "mini.framework.jdbc.username";

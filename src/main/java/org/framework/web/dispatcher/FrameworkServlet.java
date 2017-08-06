@@ -52,13 +52,13 @@ public class FrameworkServlet extends HttpServlet {
 
         String appViewPath = ConfigUtils.getAppViewPath();
         jspServlet.addMapping(appViewPath + "*");
-        LOGGER.info("registe jsp servlet to servlet context..");
-        // 注册默认的servlet
+        LOGGER.info("register jsp servlet to url: {} ", appViewPath);
+        // 注册处理静态资源的servlet
         ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
 
         String appWebResourcePath = ConfigUtils.getAppWebResourcePath();
         defaultServlet.addMapping(appWebResourcePath + "*");
-        LOGGER.error("registe default servlet to servlet context..");
+        LOGGER.error("register default servlet to url: {}", appWebResourcePath);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class FrameworkServlet extends HttpServlet {
     }
 
     private Map<String, Object> getParameterMap(HttpServletRequest request) throws UnsupportedEncodingException {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String parameterName = parameterNames.nextElement();

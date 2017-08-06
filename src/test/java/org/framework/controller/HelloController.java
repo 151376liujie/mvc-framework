@@ -13,7 +13,7 @@ import java.util.Date;
 @Controller
 public class HelloController {
 
-    @ActionMapping(method = "post", requestUrl = "/getTime")
+    @ActionMapping(method = "get", requestUrl = "/getTime")
     public String getServerTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return simpleDateFormat.format(new Date());

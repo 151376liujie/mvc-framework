@@ -15,20 +15,24 @@ public class ActionHandler implements Serializable {
     private Class<?> controllerClass;
     private Method actionMethod;
 
-    public Class<?> getControllerClass() {
-        return controllerClass;
-    }
-
-    public void setControllerClass(Class<?> controllerClass) {
+    public ActionHandler(Class<?> controllerClass, Method method) {
+        this.actionMethod = method;
         this.controllerClass = controllerClass;
     }
 
+    public Class<?> getControllerClass() {
+        return this.controllerClass;
+    }
+
     public Method getActionMethod() {
-        return actionMethod;
+        return this.actionMethod;
     }
 
-    public void setActionMethod(Method actionMethod) {
-        this.actionMethod = actionMethod;
+    @Override
+    public String toString() {
+        return "ActionHandler{" +
+                "controllerClass=" + this.controllerClass +
+                ", actionMethod=" + this.actionMethod +
+                '}';
     }
-
 }

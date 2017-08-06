@@ -14,6 +14,9 @@ public class BeanContainer {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(BeanContainer.class);
 
+    /**
+     * 存放bean的集合，key-bean对应的class，value-class对应的实例对象
+     */
     private static final Map<Class<?>, Object> beanMap = new HashMap<>();
 
     static {
@@ -21,7 +24,7 @@ public class BeanContainer {
         for (Class<?> clazz : beanClassSet) {
             Object instance = ReflectionUtils.newInstance(clazz);
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("class {} has added to bean container...", clazz.getName());
+                LOGGER.info("class {} has bean instanced and added to bean container...", clazz.getName());
             }
             beanMap.put(clazz, instance);
         }
@@ -32,13 +35,15 @@ public class BeanContainer {
     }
 
     /**
-     * 获取指定类型的bean实例
+     * 获取指定类型的实例
      *
      * @param clazz
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz) {
+        if (!beanMap.containsKey(clazz)) {
+            throw new RuntimeException("can not get bean by class: {}" + clazz.getName());
+        }
         return (T) beanMap.get(clazz);
     }
 

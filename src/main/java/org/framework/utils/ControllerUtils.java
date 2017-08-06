@@ -17,7 +17,7 @@ import java.util.Set;
 public final class ControllerUtils {
 
     // key-请求，value-处理器
-    private static final Map<Request, ActionHandler> actionMap = new HashMap<Request, ActionHandler>();
+    private static final Map<Request, ActionHandler> actionMap = new HashMap<>();
 
     static {
         Set<Class<?>> controllerClassSet = ClassUtils.getControllerClassSet();
@@ -41,7 +41,8 @@ public final class ControllerUtils {
     /**
      * 根据指定的request获取actionhandler对象
      *
-     * @param request
+     * @param requestUrl 请求URL
+     * @param method     http方法
      * @return
      */
     public static ActionHandler getActionHandler(String requestUrl,
@@ -58,9 +59,7 @@ public final class ControllerUtils {
 
     private static ActionHandler buildActionHandler(Class<?> controllerClass,
                                                     Method method) {
-        ActionHandler actionHandler = new ActionHandler();
-        actionHandler.setControllerClass(controllerClass);
-        actionHandler.setActionMethod(method);
+        ActionHandler actionHandler = new ActionHandler(controllerClass, method);
         return actionHandler;
     }
 

@@ -28,6 +28,13 @@ public final class ClassUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtils.class);
 
+    private static final Set<Class<?>> CLASSES;
+
+    static {
+        String appBasePath = ConfigUtils.getAppBasePath();
+        CLASSES = getClassSet(appBasePath);
+    }
+
     /**
      * 获取类加载器
      *
@@ -65,6 +72,9 @@ public final class ClassUtils {
         return cls;
     }
 
+    public static Set<Class<?>> getClassSet() {
+        return CLASSES;
+    }
 
     /**
      * 加载制定包名下的所有类
@@ -144,9 +154,7 @@ public final class ClassUtils {
     public static Set<Class<?>> getClassSetByAnnotation(
             Class<? extends Annotation> annotationClazz) {
         Set<Class<?>> set = new HashSet<>();
-        String basePackage = ConfigUtils.getAppBasePath();
-        Set<Class<?>> classSet = getClassSet(basePackage);
-        for (Class<?> cls : classSet) {
+        for (Class<?> cls : CLASSES) {
             if (cls.isAnnotationPresent(annotationClazz)) {
                 set.add(cls);
             }
@@ -160,28 +168,10 @@ public final class ClassUtils {
      * @return
      */
     public static Set<Class<?>> getBeanClassSet() {
-        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        Set<Class<?>> classSet = new HashSet<>();
         classSet.addAll(getControllerClassSet());
         classSet.addAll(getServiceClassSet());
         return classSet;
-    }
-
-    /**
-     * 获取父类或接口下所有的子类或实现类
-     *
-     * @param superClazz
-     * @return
-     */
-    public static Set<Class<?>> getClassSetBySuperClass(Class<?> superClazz) {
-        Set<Class<?>> classes = new HashSet<>();
-        String basePackage = ConfigUtils.getAppBasePath();
-        Set<Class<?>> classSet = getClassSet(basePackage);
-        for (Class<?> clazz : classSet) {
-            if (!clazz.equals(superClazz) && superClazz.isAssignableFrom(clazz)) {
-                classes.add(clazz);
-            }
-        }
-        return classes;
     }
 
     private static void addClass(Set<Class<?>> classSet, String packagePath,
@@ -221,4 +211,20 @@ public final class ClassUtils {
         classSet.add(classForLoad);
     }
 
+    /**
+     * 获取父类或接口下所有的子类或实现类
+     *
+     * @param superClazz
+     * @return
+     */
+    public static Set<Class<?>> getClassSetBySuperClass(Class<?> superClazz) {
+        Set<Class<?>> classes = new HashSet<>();
+        Set<Class<?>> classSet = getClassSet();
+        for (Class<?> clazz : classSet) {
+            if (!clazz.equals(superClazz) && superClazz.isAssignableFrom(clazz)) {
+                classes.add(clazz);
+            }
+        }
+        return classes;
+    }
 }

@@ -1,7 +1,9 @@
 package org.framework.utils;
 
 import org.framework.BeanContainer;
+import org.framework.FrameworkLoader;
 import org.framework.service.HelloService;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,6 @@ public class TestAopUtils {
 
     @Test
     public void test() {
-        ClassUtils.loadClass(AopUtils.class.getName(), true);
 
 //        Map<Class<?>, Object> beanMap = BeanContainer.getBeanMap();
 
@@ -28,5 +29,8 @@ public class TestAopUtils {
         helloService.sayHi("liujie");
     }
 
-
+    @Before
+    public void testInitFramework() throws Exception {
+        FrameworkLoader.init();
+    }
 }

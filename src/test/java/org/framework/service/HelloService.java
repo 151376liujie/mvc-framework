@@ -9,10 +9,8 @@ import org.framework.annotation.Service;
 @Service
 public class HelloService {
 
-
     public void sayHi(String name) {
         System.out.println("hello," + name);
     }
-
 
 }

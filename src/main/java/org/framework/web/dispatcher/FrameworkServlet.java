@@ -2,6 +2,7 @@ package org.framework.web.dispatcher;
 
 import org.apache.commons.lang3.StringUtils;
 import org.framework.BeanContainer;
+import org.framework.FrameworkLoader;
 import org.framework.bean.ActionHandler;
 import org.framework.model.PageView;
 import org.framework.model.RequestParameter;
@@ -93,7 +94,12 @@ public class FrameworkServlet extends HttpServlet {
             }
             try {
                 RequestParameter requestParameter = new RequestParameter(map);
-                Object result = ReflectionUtils.invokeMethod(controller, actionMethod, requestParameter);
+                Object result = null;
+                if (requestParameter.isEmpty()) {
+                    result = ReflectionUtils.invokeMethod(controller, actionMethod);
+                } else {
+                    result = ReflectionUtils.invokeMethod(controller, actionMethod, requestParameter);
+                }
                 if (result instanceof PageView) {
                     // 返回视图
                     PageView view = (PageView) result;

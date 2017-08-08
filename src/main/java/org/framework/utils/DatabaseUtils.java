@@ -28,7 +28,7 @@ public final class DatabaseUtils {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(DatabaseUtils.class);
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
-    private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
+    private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<>();
     private static final String driverClass;
     private static final String url;
     private static final String userName;
@@ -50,7 +50,7 @@ public final class DatabaseUtils {
         try {
             DATA_SOURCE = BasicDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -60,17 +60,17 @@ public final class DatabaseUtils {
      * @return
      */
     public static Connection getConnection() {
+        Connection connection = null;
         try {
-            Connection connection = CONNECTION_HOLDER.get();
+            connection = CONNECTION_HOLDER.get();
             if (connection == null) {
                 connection = DATA_SOURCE.getConnection();
                 CONNECTION_HOLDER.set(connection);
-                return connection;
             }
         } catch (Exception e) {
             LOGGER.error("failed to fetch a connection!", e);
         }
-        return null;
+        return connection;
     }
 
     /**
@@ -81,7 +81,6 @@ public final class DatabaseUtils {
         if (connection != null) {
             try {
                 connection.close();
-                connection = null;
                 CONNECTION_HOLDER.remove();
             } catch (Exception e) {
                 LOGGER.error("failed to close connection !", e);
@@ -101,7 +100,7 @@ public final class DatabaseUtils {
             throws SQLException {
         Connection connection = getConnection();
         int row = QUERY_RUNNER.update(connection, sql, params);
-        closeConnection();
+//        closeConnection();
         return row;
     }
 
@@ -118,7 +117,7 @@ public final class DatabaseUtils {
                                            Object[] params) throws Exception {
         Connection connection = getConnection();
         List<T> list = QUERY_RUNNER.query(connection, sql,
-                new BeanListHandler<T>(clazz), params);
+                new BeanListHandler<>(clazz), params);
         closeConnection();
         return list;
     }
@@ -136,7 +135,7 @@ public final class DatabaseUtils {
                                        Object[] params) throws SQLException {
         Connection connection = getConnection();
         T entity = QUERY_RUNNER.query(connection, sql,
-                new BeanHandler<T>(clazz), params);
+                new BeanHandler<>(clazz), params);
         closeConnection();
         return entity;
     }
@@ -154,7 +153,7 @@ public final class DatabaseUtils {
         StringBuilder sql = new StringBuilder();
         StringBuilder placeHolder = new StringBuilder();
         sql.append(" INSERT INTO ").append(getTableName(clazz)).append("(");
-        List<Object> paramsList = new ArrayList<Object>();
+        List<Object> paramsList = new ArrayList<>();
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
             field.setAccessible(true);
@@ -185,7 +184,7 @@ public final class DatabaseUtils {
      */
     public static <T> int updateEntity(Class<T> clazz, long id,
                                        Map<String, Object> fieldMap) throws SQLException {
-        List<Object> params = new ArrayList<Object>();
+        List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder();
         sql.append(" UPDATE ").append(getTableName(clazz)).append(" SET ");
         for (Entry<String, Object> entry : fieldMap.entrySet()) {
@@ -212,7 +211,58 @@ public final class DatabaseUtils {
         sql.append("DELETE FROM ").append(getTableName(clazz))
                 .append(" WHERE id =?");
         return executeUpdate(sql.toString(), new Object[]{id});
+    }
 
+    /**
+     * 提交事务
+     */
+    public static void beginTransaction() {
+        Connection connection = getConnection();
+        if (connection != null) {
+            try {
+                connection.setAutoCommit(false);
+                CONNECTION_HOLDER.set(connection);
+            } catch (SQLException e) {
+                LOGGER.error("error to start a transaction", e);
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * 提交事务
+     */
+    public static void commitTransaction() {
+        Connection connection = getConnection();
+        if (connection != null) {
+            try {
+                connection.commit();
+                connection.close();
+            } catch (SQLException e) {
+                LOGGER.error("error to commit a transaction", e);
+                throw new RuntimeException(e);
+            } finally {
+                CONNECTION_HOLDER.remove();
+            }
+        }
+    }
+
+    /**
+     * 回滚事务
+     */
+    public static void rollbackTransaction() {
+        Connection connection = getConnection();
+        if (connection != null) {
+            try {
+                connection.rollback();
+                connection.close();
+            } catch (SQLException e) {
+                LOGGER.error("error to rollback a transaction", e);
+                throw new RuntimeException(e);
+            } finally {
+                CONNECTION_HOLDER.remove();
+            }
+        }
     }
 
     /**

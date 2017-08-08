@@ -11,7 +11,8 @@ import java.util.List;
  * Created by liujie on 2016/4/26 23:49.
  */
 public class ProxyChain {
-    private static int index = 0;
+
+    private int index = 0;
     /**
      * 目标类
      */
@@ -44,32 +45,32 @@ public class ProxyChain {
     }
 
     public Class<?> getTargetClass() {
-        return targetClass;
+        return this.targetClass;
     }
 
     public Object getTargetObject() {
-        return targetObject;
+        return this.targetObject;
     }
 
     public Method getTargetMethod() {
-        return targetMethod;
+        return this.targetMethod;
     }
 
     public MethodProxy getMethodProxy() {
-        return methodProxy;
+        return this.methodProxy;
     }
 
     public Object[] getMethodParams() {
-        return methodParams;
+        return this.methodParams;
     }
 
     public Object doProxyChain() throws Throwable {
         Object invokeResult;
-        if (index < proxyList.size()) {
-            Proxy proxy = proxyList.get(index++);
+        if (this.index < this.proxyList.size()) {
+            Proxy proxy = this.proxyList.get(this.index++);
             invokeResult = proxy.doProxy(this);
         } else {
-            invokeResult = getMethodProxy().invokeSuper(targetObject, methodParams);
+            invokeResult = getMethodProxy().invokeSuper(this.targetObject, this.methodParams);
         }
         return invokeResult;
     }

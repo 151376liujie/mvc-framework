@@ -1,8 +1,11 @@
 package org.framework.aop;
 
+import org.framework.BeanContainer;
+import org.framework.FrameworkLoader;
 import org.framework.service.HelloService;
+import org.framework.service.UserService;
 import org.framework.utils.ClassUtils;
-import org.framework.utils.FrameworkLoader;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -15,10 +18,15 @@ import java.util.Set;
  */
 public class AopClient {
 
-    @Test
-    public void testAop() {
+
+    @Before
+    public void setup() throws Exception {
         //初始化
         FrameworkLoader.init();
+    }
+
+    @Test
+    public void testAop() {
         Set<Class<?>> aspectClassSet = ClassUtils.getAspectClassSet();
         System.out.println(aspectClassSet);
         List<Proxy> proxyList = new ArrayList<>();
@@ -40,5 +48,12 @@ public class AopClient {
                 }
             }
         }
+    }
+
+    @Test
+    public void testTransaction() throws Exception {
+        UserService userService = BeanContainer.getBean(UserService.class);
+        int update = userService.update("hah");
+        System.out.println(update);
     }
 }

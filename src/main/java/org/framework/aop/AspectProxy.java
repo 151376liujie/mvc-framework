@@ -1,6 +1,5 @@
 package org.framework.aop;
 
-import org.framework.utils.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,26 +14,31 @@ public abstract class AspectProxy implements Proxy {
     private static final Logger LOGGER = LoggerFactory.getLogger(AspectProxy.class);
 
     @Override
-    public final Object doProxy(ProxyChain proxyChain) {
+    public final Object doProxy(ProxyChain proxyChain) throws Throwable {
         Class<?> targetClass = proxyChain.getTargetClass();
         Object targetObject = proxyChain.getTargetObject();
         Method targetMethod = proxyChain.getTargetMethod();
         Object[] methodParams = proxyChain.getMethodParams();
 
-        if (intercept(targetClass, targetObject, targetMethod)) {
-            try {
+        Object result = null;
+
+        try {
+            if (intercept(targetClass, targetObject, targetMethod)) {
                 before(targetClass, targetObject, targetMethod, methodParams);
-                Object result = ReflectionUtils.invokeMethod(targetObject, targetMethod, methodParams);
+                result = proxyChain.doProxyChain();
                 after(targetClass, targetObject, targetMethod, methodParams, result);
                 return result;
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
-                error(targetClass, targetObject, targetMethod, methodParams, e);
-            } finally {
-                end(targetClass, targetObject, targetMethod, methodParams);
+            } else {
+                result = proxyChain.doProxyChain();
             }
+        } catch (Throwable throwable) {
+            LOGGER.error(throwable.getMessage(), throwable);
+            error(targetClass, targetObject, targetMethod, methodParams, throwable);
+            throw throwable;
+        } finally {
+            end(targetClass, targetObject, targetMethod, methodParams);
         }
-        return null;
+        return result;
     }
 
     /**
@@ -59,7 +63,7 @@ public abstract class AspectProxy implements Proxy {
      * @param e
      */
     protected void error(Class<?> targetClass, Object targetObject,
-                         Method targetMethod, Object[] methodParams, Exception e) {
+                         Method targetMethod, Object[] methodParams, Throwable e) {
     }
 
     /**

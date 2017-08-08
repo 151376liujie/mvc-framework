@@ -21,9 +21,9 @@ public final class AopUtils {
 
     static {
         LOGGER.info("aop framework is going to load...");
-
+        //key-切面类class，value-目标类集合
         Map<Class<?>, Set<Class<?>>> proxyMap = getProxyMap();
-
+        //key-目标类class，value-切面类实例
         Map<Class<?>, List<Proxy>> targetMap = getTargetMap(proxyMap);
 
         Map<Class<?>, Object> beanMap = BeanContainer.getBeanMap();
@@ -39,7 +39,6 @@ public final class AopUtils {
             beanMap.put(targetClass, proxy);
 
         }
-
     }
 
 
@@ -90,7 +89,9 @@ public final class AopUtils {
     private static Map<Class<?>, List<Proxy>> getTargetMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
         Map<Class<?>, List<Proxy>> targetMap = new HashMap<>();
         for (Map.Entry<Class<?>, Set<Class<?>>> entry : proxyMap.entrySet()) {
+            //切面类
             Class<?> aspectClass = entry.getKey();
+            //目标类集合
             Set<Class<?>> targetClassSet = entry.getValue();
             for (Class<?> targetClass : targetClassSet) {
                 Proxy proxyInstance = (Proxy) ReflectionUtils.newInstance(aspectClass);

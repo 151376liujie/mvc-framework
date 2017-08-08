@@ -19,7 +19,7 @@ public class RequestParameter implements Serializable {
 
     private static final String KEY_RESPONSE = "key_response";
 
-    private Map<String, Object> parameterMap = new HashMap<String, Object>();
+    private Map<String, Object> parameterMap = new HashMap<>();
 
     public RequestParameter(Map<String, Object> parameterMap) {
         super();
@@ -27,7 +27,7 @@ public class RequestParameter implements Serializable {
     }
 
     public Map<String, Object> getParameterMap() {
-        return parameterMap;
+        return this.parameterMap;
     }
 
     /**
@@ -36,7 +36,7 @@ public class RequestParameter implements Serializable {
      * @return
      */
     public HttpServletRequest getHttpServletRequest() {
-        return (HttpServletRequest) parameterMap.get(KEY_REQUEST);
+        return (HttpServletRequest) this.parameterMap.get(KEY_REQUEST);
     }
 
     /**
@@ -45,7 +45,7 @@ public class RequestParameter implements Serializable {
      * @return
      */
     public HttpServletResponse getHttpServletResponse() {
-        return (HttpServletResponse) parameterMap.get(KEY_RESPONSE);
+        return (HttpServletResponse) this.parameterMap.get(KEY_RESPONSE);
     }
 
     /**
@@ -55,7 +55,10 @@ public class RequestParameter implements Serializable {
      * @return
      */
     public String getString(String name) {
-        return parameterMap.get(name).toString();
+        return this.parameterMap.get(name).toString();
     }
 
+    public boolean isEmpty() {
+        return this.parameterMap.isEmpty();
+    }
 }

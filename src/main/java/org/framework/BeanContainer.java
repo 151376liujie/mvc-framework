@@ -42,7 +42,7 @@ public class BeanContainer {
      */
     public static <T> T getBean(Class<T> clazz) {
         if (!beanMap.containsKey(clazz)) {
-            throw new RuntimeException("can not get bean by class: {}" + clazz.getName());
+            throw new RuntimeException("can not get bean by class: " + clazz.getName());
         }
         return (T) beanMap.get(clazz);
     }

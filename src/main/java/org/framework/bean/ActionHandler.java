@@ -10,8 +10,6 @@ import java.lang.reflect.Method;
  */
 public class ActionHandler implements Serializable {
 
-    private static final long serialVersionUID = 4383310918010581376L;
-
     private Class<?> controllerClass;
     private Method actionMethod;
 

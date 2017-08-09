@@ -184,6 +184,9 @@ public final class ClassUtils {
                         || pathname.isDirectory();
             }
         });
+        if (files == null || files.length == 0) {
+            return;
+        }
         for (File file : files) {
             String fileName = file.getName();
             if (file.isFile()) {

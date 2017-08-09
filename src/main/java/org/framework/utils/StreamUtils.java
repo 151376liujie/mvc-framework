@@ -3,10 +3,7 @@ package org.framework.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * 流相关工具类
@@ -24,10 +21,10 @@ public final class StreamUtils {
      * @param inputStream
      * @return
      */
-    public static String getString(InputStream inputStream) {
+    public static String getString(InputStream inputStream) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream));
+                inputStream, "utf-8"));
         String line = "";
         try {
             while ((line = reader.readLine()) != null) {

@@ -1,5 +1,9 @@
 package org.framework.utils;
 
+import org.framework.BeanContainer;
+import org.framework.FrameworkLoader;
+import org.framework.service.HelloService;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -9,15 +13,16 @@ import org.junit.Test;
  */
 public class TestIocUtils {
 
+    @Before
+    public void setUp() throws Exception {
+        FrameworkLoader.init();
+    }
+
     @Test
     public void testDoInject() {
-        // HelloServlet bean = BeanContainer.getBean(HelloServlet.class);
-        // System.out.println("注入之前。。。");
-        // System.out.println(bean.getHelloService());
-        // IocUtils.doInject();
-        // System.out.println("注入之后。。。");
-        // bean = BeanContainer.getBean(HelloServlet.class);
-        // System.out.println(bean.getHelloService());
+        HelloService helloService = BeanContainer.getBean(HelloService.class);
+
+        helloService.sayHi("liujie");
     }
 
 }

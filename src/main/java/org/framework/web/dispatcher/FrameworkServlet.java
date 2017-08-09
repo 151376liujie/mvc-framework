@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.framework.BeanContainer;
 import org.framework.FrameworkLoader;
 import org.framework.bean.ActionHandler;
+import org.framework.model.JsonResponseData;
 import org.framework.model.PageView;
 import org.framework.model.RequestParameter;
-import org.framework.model.ResponseData;
 import org.framework.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,20 +53,25 @@ public class FrameworkServlet extends HttpServlet {
 
         String appViewPath = ConfigUtils.getAppViewPath();
         jspServlet.addMapping(appViewPath + "*");
-        LOGGER.info("register jsp servlet to url: {} ", appViewPath);
         // 注册处理静态资源的servlet
         ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
 
         String appWebResourcePath = ConfigUtils.getAppWebResourcePath();
         defaultServlet.addMapping(appWebResourcePath + "*");
-        LOGGER.error("register default servlet to url: {}", appWebResourcePath);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("register jsp servlet to url: {} ", appViewPath);
+            LOGGER.info("register default servlet to url: {}", appWebResourcePath);
+        }
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         String requestURl = request.getPathInfo();
 
         String method = request.getMethod().toLowerCase();
@@ -116,18 +121,15 @@ public class FrameworkServlet extends HttpServlet {
                                     .forward(request, response);
                         }
                     }
-                } else if (result instanceof ResponseData) {
+                } else if (result instanceof JsonResponseData) {
                     // 返回json数据
-                    ResponseData responseData = (ResponseData) result;
-                    Object model = responseData.getModel();
-                    if (model != null) {
-                        PrintWriter writer = response.getWriter();
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        String jsonString = JsonUtils.toJsonString(model);
-                        writer.write(jsonString);
-                        writer.close();
-                    }
+                    JsonResponseData responseData = (JsonResponseData) result;
+                    PrintWriter writer = response.getWriter();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    String jsonString = JsonUtils.toJsonString(responseData);
+                    writer.write(jsonString);
+                    writer.close();
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);

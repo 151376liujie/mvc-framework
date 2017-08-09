@@ -53,7 +53,7 @@ public class AopClient {
     @Test
     public void testTransaction() throws Exception {
         UserService userService = BeanContainer.getBean(UserService.class);
-        int update = userService.update("hah");
+        int update = userService.updateUserPassword(1, "11111");
         System.out.println(update);
     }
 }

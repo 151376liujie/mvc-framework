@@ -1,5 +1,6 @@
 package org.framework.service;
 
+import org.framework.annotation.Inject;
 import org.framework.annotation.Service;
 
 /**
@@ -9,8 +10,11 @@ import org.framework.annotation.Service;
 @Service
 public class HelloService {
 
+    @Inject
+    private GreetService greetService;
+
     public void sayHi(String name) {
-        System.out.println("hello," + name);
+        greetService.sayHi(name);
     }
 
 }

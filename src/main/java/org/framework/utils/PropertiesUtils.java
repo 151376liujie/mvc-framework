@@ -38,13 +38,11 @@ public final class PropertiesUtils {
             LOGGER.error("filed to load properties", e);
             return null;
         } finally {
-            if (resource != null) {
-                try {
-                    resource.close();
-                    resource = null;
-                } catch (IOException e) {
-                    LOGGER.error("failed to close input stream ", e);
-                }
+            try {
+                resource.close();
+                resource = null;
+            } catch (IOException e) {
+                LOGGER.error("failed to close input stream ", e);
             }
         }
     }
@@ -102,7 +100,7 @@ public final class PropertiesUtils {
         }
         String property = properties.getProperty(key);
         if (StringUtils.isNotEmpty(property)) {
-            return Integer.valueOf(property);
+            return Integer.parseInt(property);
         }
         return defaultValue;
     }

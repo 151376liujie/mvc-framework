@@ -33,7 +33,7 @@ public class TestReflectionUtils {
         Object newInstance = ReflectionUtils.newInstance(String.class);
         Field field = String.class.getDeclaredField("hash");
         ReflectionUtils.setField(newInstance, field, 124556);
-        System.out.println(newInstance.hashCode());
+        Assert.assertEquals(124556, newInstance.hashCode());
     }
 
 

@@ -52,9 +52,7 @@ public final class AopUtils {
         Set<Class<?>> classes = new HashSet<>();
         if (aspect != null) {
             Class<? extends Annotation> annotation = aspect.value();
-            if (!annotation.equals(aspect)) {
-                classes.addAll(ClassUtils.getClassSetByAnnotation(annotation));
-            }
+            classes.addAll(ClassUtils.getClassSetByAnnotation(annotation));
         }
         return classes;
     }

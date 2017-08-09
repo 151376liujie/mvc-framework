@@ -29,10 +29,10 @@ public final class DatabaseUtils {
             .getLogger(DatabaseUtils.class);
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
     private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<>();
-    private static final String driverClass;
-    private static final String url;
-    private static final String userName;
-    private static final String pass;
+    private static final String PROP_DRIVER_CLASS_NAME = "driverClassName";
+    private static final String PROP_URL = "url";
+    private static final String PROP_USERNAME = "username";
+    private static final String PROP_PASSWORD = "password";
     private static final String JDBC_PROPERTIES_FILE = "jdbc.properties";
     private static final String KEY_JDBC_DRIVER = "jdbc.driver";
     private static final String KEY_JDBC_URL = "jdbc.url";
@@ -43,12 +43,14 @@ public final class DatabaseUtils {
     static {
         Properties properties = PropertiesUtils
                 .loadProperties(JDBC_PROPERTIES_FILE);
-        driverClass = PropertiesUtils.getString(properties, KEY_JDBC_DRIVER);
-        url = PropertiesUtils.getString(properties, KEY_JDBC_URL);
-        userName = PropertiesUtils.getString(properties, KEY_JDBC_USERNAME);
-        pass = PropertiesUtils.getString(properties, KEY_JDBC_PASSWORD);
+
+        Properties jdbcProperties = new Properties();
+        jdbcProperties.setProperty(PROP_DRIVER_CLASS_NAME, PropertiesUtils.getString(properties, KEY_JDBC_DRIVER));
+        jdbcProperties.setProperty(PROP_URL, PropertiesUtils.getString(properties, KEY_JDBC_URL));
+        jdbcProperties.setProperty(PROP_USERNAME, PropertiesUtils.getString(properties, KEY_JDBC_USERNAME));
+        jdbcProperties.setProperty(PROP_PASSWORD, PropertiesUtils.getString(properties, KEY_JDBC_PASSWORD));
         try {
-            DATA_SOURCE = BasicDataSourceFactory.createDataSource(properties);
+            DATA_SOURCE = BasicDataSourceFactory.createDataSource(jdbcProperties);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

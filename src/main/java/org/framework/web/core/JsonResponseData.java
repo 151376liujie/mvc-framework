@@ -1,4 +1,4 @@
-package org.framework.model;
+package org.framework.web.core;
 
 import java.io.Serializable;
 

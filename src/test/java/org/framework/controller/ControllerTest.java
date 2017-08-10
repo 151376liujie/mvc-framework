@@ -1,9 +1,9 @@
 package org.framework.controller;
 
-import org.framework.bean.ActionHandler;
 import org.framework.utils.ConfigUtils;
 import org.framework.utils.ControllerUtils;
-import org.framework.web.dispatcher.FrameworkServlet;
+import org.framework.web.core.ActionHandler;
+import org.framework.web.core.FrameworkServlet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

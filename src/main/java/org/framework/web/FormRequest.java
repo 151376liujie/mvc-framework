@@ -9,6 +9,11 @@ public class FormRequest extends WebRequestBaseParameter {
 
     private String fieldValue;
 
+    public FormRequest(String fieldName, String fieldValue) {
+        super.setFieldName(fieldName);
+        this.fieldValue = fieldValue;
+    }
+
     public String getFieldValue() {
         return fieldValue;
     }
@@ -16,4 +21,5 @@ public class FormRequest extends WebRequestBaseParameter {
     public void setFieldValue(String fieldValue) {
         this.fieldValue = fieldValue;
     }
+
 }

@@ -87,6 +87,28 @@ public final class PropertiesUtils {
     }
 
     /**
+     * 得到long类型的属性值
+     *
+     * @param properties
+     * @param key
+     * @return
+     */
+    public static long getLong(Properties properties, String key) {
+        return getLong(properties, key, 0);
+    }
+
+    public static long getLong(Properties properties, String key, long defaultVal) {
+        if (properties == null) {
+            return defaultVal;
+        }
+        String property = properties.getProperty(key);
+        if (StringUtils.isNotEmpty(property)) {
+            return Long.parseLong(property);
+        }
+        return defaultVal;
+    }
+
+    /**
      * 得到整形属性值（可指定默认值）
      *
      * @param properties

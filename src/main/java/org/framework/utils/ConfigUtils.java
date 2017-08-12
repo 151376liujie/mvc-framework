@@ -83,4 +83,12 @@ public final class ConfigUtils {
                 ConfigConstant.FRAMEWORK_WEB_RESOURCE_PATH, "/assert/");
     }
 
+    /**
+     * 获取单个上传文件最大size(单位M)
+     *
+     * @return
+     */
+    public static long getUploadFileSizeMax() {
+        return PropertiesUtils.getLong(PROPERTIES, ConfigConstant.FRAMEWORK_UPLOAD_FILE_MAX_SIZE, 10);
+    }
 }

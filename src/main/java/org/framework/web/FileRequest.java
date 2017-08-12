@@ -1,14 +1,13 @@
 package org.framework.web;
 
 import java.io.InputStream;
-import java.io.Serializable;
 
 /**
  * 封装上传文件相关参数
  * Author: jonny
  * Time: 2017-08-10 13:43.
  */
-public class FileRequest implements Serializable {
+public class FileRequest extends WebRequestBaseParameter {
 
     /**
      * 上传的文件名
@@ -55,5 +54,10 @@ public class FileRequest implements Serializable {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        super.setFieldName(fieldName);
     }
 }

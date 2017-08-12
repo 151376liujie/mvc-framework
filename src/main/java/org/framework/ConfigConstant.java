@@ -17,6 +17,7 @@ public interface ConfigConstant {
     String JDBC_PASSWORD = "mini.framework.jdbc.password";
     String FRAMEWORK_BASE_PACKAGE = "mini.framework.basepackage";
     String FRAMEWORK_VIEW_PATH = "mini.framework.view.path";
+    String FRAMEWORK_UPLOAD_FILE_MAX_SIZE = "mini.framework.uploadfile.max.size";
     /**
      * web项目的资源路径（css,js文件路径）
      */

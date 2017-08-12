@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author liujie
  */
-public class JsonResponseData<T> implements Serializable {
+public class JsonResponseView<T> implements Serializable {
 
     private int code;
 
@@ -15,12 +15,12 @@ public class JsonResponseData<T> implements Serializable {
 
     private T data;
 
-    public JsonResponseData(int code, String message) {
+    public JsonResponseView(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public JsonResponseData(T data) {
+    public JsonResponseView(T data) {
         this.data = data;
     }
 
@@ -46,5 +46,9 @@ public class JsonResponseData<T> implements Serializable {
 
     public T getData() {
         return data;
+    }
+
+    public static JsonResponseView buildSuccessResponse(Object data) {
+        return new JsonResponseView(data);
     }
 }
